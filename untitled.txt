@@ -1,0 +1,50 @@
+
+
+1. Excel-Based Configuration:
+
+before- we need to copy the all the datails and fill it one by one in every task.
+o The accelerator extracts metadata from an Excel template, providing a structured and configurable approach to defining source and target database details.
+o This reduces manual effort and ensures consistency across multiple ingestion workflows.
+2. JSON Schema Processing:
+before- After useing code_convestion_framework we will get json files and then according to task we need to add ETL columns and OGG columns accordingly
+after- the accelrator reads schema definitions from JSON files and then add the ETL column and OGG columns dynamically in json structure based on their tasks.if source system is sybase then we do not need to add any additional columns,we also handle this condition in accelrator 
+o This allows for flexible schema management and adaptation to changing source table structures.
+
+3. Automated Column Renaming:
+before -  sometimes columns name is SQL reserved keywords.it will giving the error while data loading.we need to search or find all the columns name,is column name is reserved keywords or not one by one
+after - the accelarator detects SQL reserved keywords in column names and automatically renames them to avoid conflicts.it will save the time and manual effort for searching the keywords.
+o This ensures smooth execution without syntax errors.
+
+4. YAML Generation:
+befor - we need to copy all the values from ingestion templet one by one and pest in perticular task.aslo we need to follow the nameing convestion of task_id and other things.
+for OGG task we need to create 2 constucts DBtoRedshift - for historical / treadistional load and OGGToRedshift - for incremental load 
+
+after - Produces YAML configuration files (DBtoRedshift.yml & OGGToRedshift.yml) to define ingestion tasks.
+o These YAML files are used for automating creating tasks and ensuring seamless data transfer to Redshift.
+the accelrator follows the nameing converstion and creates automatically all the constuct releated that tables
+
+5. SQL Query Generation:
+
+before - we get only select SELECT queries for view creation and then we need to add SPII / PII column masking manually based on ingestion templet.
+after -the accelarator Automatically generates SELECT queries for view creation.
+o It includes conditions for PII/SPII masking; ensuring sensitive data is protected during ingestion.
+
+6. Secret Manager Integration:
+before - we need to search or find the secret details from secret manager for each tasks
+after - the accelertor Fetches database credentials securely from a secret_name.json file, preventing hardcoded sensitive information and improving security in the ingestion process
+
+7. Additional Columns:
+o If the source database type is not 'Sybase', the accelerator automatically adds ETL-related columns to track metadata such as created by, updated time and change flags, aiding in auditability
+
+8. OGG Handling:
+o If the ingestion task involves OGG replication (OGGToRedshift), the accelerator ensures that OGG-specific columns like sequence numbers and timestamps are properly handled for accurate replication.
+
+9. Historical Tables:
+before - there are some tables having historical table.we need also create seprate constuct for that table
+after - The accelerator supports the ingestion of archived or historical tables, creating separate ingestion configurations to handle historical data alongside active datasets.
+
+10. Partitioning:
+before - we need to put partitioning based on their table size.we need to check size munully and add the partitioning 
+after- the accelarator For large tables, automatic partitioning is applied based on reliable date columns and table size.
+o This optimizes query performance and improves data retrieval efficiency.
+
